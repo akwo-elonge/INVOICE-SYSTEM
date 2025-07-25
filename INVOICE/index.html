@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Invoice System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="invoice-header">
+            <h1>Invoice System</h1>
+            <div class="header-actions">
+                <button id="saveBtn" class="btn btn-save">Save Invoice</button>
+                <button id="printBtn" class="btn btn-print">Print Receipt</button>
+                <button id="newInvoiceBtn" class="btn btn-new">New Invoice</button>
+            </div>
+        </header>
+
+        <div class="invoice-container">
+            <!-- Company Details Section -->
+            <section class="company-section">
+                <h2>Company Details</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="companyName">Company Name</label>
+                        <input type="text" id="companyName" placeholder="Your Company Name">
+                    </div>
+                    <div class="form-group">
+                        <label for="companyAddress">Address</label>
+                        <textarea id="companyAddress" placeholder="Company Address"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="companyPhone">Phone</label>
+                        <input type="tel" id="companyPhone" placeholder="+237 XXX XXX XXX">
+                    </div>
+                    <div class="form-group">
+                        <label for="companyEmail">Email</label>
+                        <input type="email" id="companyEmail" placeholder="company@email.com">
+                    </div>
+                </div>
+            </section>
+
+            <!-- Invoice Info Section -->
+            <section class="invoice-info">
+                <div class="invoice-meta">
+                    <div class="form-group">
+                        <label for="invoiceNumber">Invoice Number</label>
+                        <input type="text" id="invoiceNumber" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="invoiceDate">Date</label>
+                        <input type="date" id="invoiceDate">
+                    </div>
+                    <div class="form-group">
+                        <label for="dueDate">Due Date</label>
+                        <input type="date" id="dueDate">
+                    </div>
+                    <div class="form-group">
+                        <label for="currency">Currency</label>
+                        <select id="currency">
+                            <option value="XAF">XAF - Central African CFA Franc</option>
+                            <option value="USD">USD - US Dollar</option>
+                            <option value="EUR">EUR - Euro</option>
+                            <option value="GBP">GBP - British Pound</option>
+                            <option value="NGN">NGN - Nigerian Naira</option>
+                            <option value="GHS">GHS - Ghanaian Cedi</option>
+                        </select>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Customer Details Section -->
+            <section class="customer-section">
+                <h2>Customer Details</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="customerName">Customer Name</label>
+                        <input type="text" id="customerName" placeholder="Customer Name">
+                    </div>
+                    <div class="form-group">
+                        <label for="customerAddress">Address</label>
+                        <textarea id="customerAddress" placeholder="Customer Address"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="customerPhone">Phone</label>
+                        <input type="tel" id="customerPhone" placeholder="+237 XXX XXX XXX">
+                    </div>
+                    <div class="form-group">
+                        <label for="customerEmail">Email</label>
+                        <input type="email" id="customerEmail" placeholder="customer@email.com">
+                    </div>
+                </div>
+            </section>
+
+            <!-- Items Section -->
+            <section class="items-section">
+                <div class="items-header">
+                    <h2>Invoice Items</h2>
+                    <div class="items-actions">
+                        <button id="addItemBtn" class="btn btn-add">Add Item</button>
+                        <select id="sortBy">
+                            <option value="">Sort by...</option>
+                            <option value="description">Description</option>
+                            <option value="quantity">Quantity</option>
+                            <option value="price">Unit Price</option>
+                            <option value="total">Total</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="items-table-container">
+                    <table id="itemsTable" class="items-table">
+                        <thead>
+                            <tr>
+                                <th>Description</th>
+                                <th>Quantity</th>
+                                <th>Unit Price</th>
+                                <th>Total</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="itemsTableBody">
+                            <!-- Items will be added here dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Add Item Form -->
+                <div id="addItemForm" class="add-item-form hidden">
+                    <h3>Add New Item</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="itemDescription">Description</label>
+                            <input type="text" id="itemDescription" placeholder="Item description">
+                        </div>
+                        <div class="form-group">
+                            <label for="itemQuantity">Quantity</label>
+                            <input type="number" id="itemQuantity" min="1" value="1">
+                        </div>
+                        <div class="form-group">
+                            <label for="itemPrice">Unit Price</label>
+                            <input type="number" id="itemPrice" min="0" step="0.01">
+                        </div>
+                        <div class="form-group">
+                            <label for="itemTotal">Total</label>
+                            <input type="number" id="itemTotal" readonly>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button id="saveItemBtn" class="btn btn-primary">Save Item</button>
+                        <button id="cancelItemBtn" class="btn btn-secondary">Cancel</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Totals Section -->
+            <section class="totals-section">
+                <div class="totals-container">
+                    <div class="total-row">
+                        <span>Subtotal:</span>
+                        <span id="subtotal">0.00</span>
+                    </div>
+                    <div class="total-row">
+                        <label for="taxRate">Tax Rate (%):</label>
+                        <input type="number" id="taxRate" min="0" max="100" step="0.1" value="0">
+                    </div>
+                    <div class="total-row">
+                        <span>Tax Amount:</span>
+                        <span id="taxAmount">0.00</span>
+                    </div>
+                    <div class="total-row">
+                        <label for="discountRate">Discount (%):</label>
+                        <input type="number" id="discountRate" min="0" max="100" step="0.1" value="0">
+                    </div>
+                    <div class="total-row">
+                        <span>Discount Amount:</span>
+                        <span id="discountAmount">0.00</span>
+                    </div>
+                    <div class="total-row grand-total">
+                        <span>Grand Total:</span>
+                        <span id="grandTotal">0.00</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Notes Section -->
+            <section class="notes-section">
+                <h2>Notes</h2>
+                <textarea id="invoiceNotes" placeholder="Additional notes or terms..."></textarea>
+            </section>
+        </div>
+    </div>
+
+    <!-- Print Layout (Hidden) -->
+    <div id="printLayout" class="print-layout hidden">
+        <div class="print-header">
+            <div class="print-company-info">
+                <h1 id="printCompanyName"></h1>
+                <div id="printCompanyAddress"></div>
+                <div id="printCompanyContact"></div>
+            </div>
+            <div class="print-invoice-info">
+                <h2>INVOICE</h2>
+                <div>Invoice #: <span id="printInvoiceNumber"></span></div>
+                <div>Date: <span id="printInvoiceDate"></span></div>
+                <div>Due Date: <span id="printDueDate"></span></div>
+            </div>
+        </div>
+
+        <div class="print-customer">
+            <h3>Bill To:</h3>
+            <div id="printCustomerName"></div>
+            <div id="printCustomerAddress"></div>
+            <div id="printCustomerContact"></div>
+        </div>
+
+        <table class="print-items-table">
+            <thead>
+                <tr>
+                    <th>Description</th>
+                    <th>Quantity</th>
+                    <th>Unit Price</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody id="printItemsTableBody">
+            </tbody>
+        </table>
+
+        <div class="print-totals">
+            <div class="print-total-row">
+                <span>Subtotal:</span>
+                <span id="printSubtotal"></span>
+            </div>
+            <div class="print-total-row">
+                <span>Tax:</span>
+                <span id="printTaxAmount"></span>
+            </div>
+            <div class="print-total-row">
+                <span>Discount:</span>
+                <span id="printDiscountAmount"></span>
+            </div>
+            <div class="print-total-row grand-total">
+                <span>Grand Total:</span>
+                <span id="printGrandTotal"></span>
+            </div>
+        </div>
+
+        <div class="print-notes">
+            <h3>Notes:</h3>
+            <div id="printNotes"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
